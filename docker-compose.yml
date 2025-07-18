@@ -1,0 +1,28 @@
+version: '1'
+
+services:
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: development
+      MYSQL_USER: service
+      MYSQL_PASSWORD: service
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+  app:
+    image: shared-shopping-list:latest
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_NAME: development
+      DB_USER: service
+      DB_PASSWORD: service
+    ports:
+      - '8080:8080'
+
+volumes:
+  mysql_data:
